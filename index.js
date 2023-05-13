@@ -52,9 +52,11 @@ app.use(cors());
  */
 
 // Imports all of the routes from ./routes/index.js
-const users = require('./routes/users');
+const auth = require('./routes/auth');
+const user = require('./routes/user');
 
-app.use(users);
+app.use(auth);
+app.use(user);
 /**
  * -------------- SERVER ----------------
  */
