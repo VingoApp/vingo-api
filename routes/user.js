@@ -9,9 +9,18 @@ const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken")
 require('dotenv').config()
 
-router.get('/user', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/user', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     if (!req.user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
-    res.status(200).json({ success: true, user: req.user });
+    let user = await prisma.user.findUnique({
+        where: {
+            id: req.user.id
+        }
+    }).catch((err) => {
+        console.log(err);
+        return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    })
+    if (!user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    res.status(200).json({ success: true, user: user });
 });
 
 
