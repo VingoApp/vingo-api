@@ -92,7 +92,6 @@ passport.use(new GoogleStrategy({
     scope: ['email', 'profile'],
     prompt: 'consent'
 }, async function verify(issuer, profile, cb) {
-    console.log(profile, issuer)
 
     let user = await prisma.user.findUnique({
         where: {
@@ -128,7 +127,6 @@ passport.use(
             secretOrKey: "secretKey",
         },
         async (jwtPayload, done) => {
-            console.log(jwtPayload)
             try {
                 const user = jwtPayload.user;
                done(null, user);

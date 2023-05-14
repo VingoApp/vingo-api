@@ -20,6 +20,7 @@
   "dependencies": {
     "@prisma/client": "^4.14.0",
     "@quixo3/prisma-session-store": "^3.1.11",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
