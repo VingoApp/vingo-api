@@ -15,9 +15,6 @@ router.get('/login/federated/google', passport.authenticate('google'));
  * -------------- POST ROUTES ----------------
  */
 
-router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!"});
-});
 
 /* // Validate an existing user and issue a JWT
 router.post('/login', async function (req, res, next) {

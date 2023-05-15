@@ -10,7 +10,9 @@ const jwt = require("jsonwebtoken")
 const fetch = require('node-fetch')
 require('dotenv').config()
 
-router.get('/user', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
+const rateLimit = require('../middleware/rateLimit')
+
+router.get('/user', [rateLimit, passport.authenticate('jwt', { session: false })], async (req, res, next) => {
     if (!req.user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     let user = await prisma.user.findUnique({
         where: {
@@ -23,13 +25,11 @@ router.get('/user', passport.authenticate('jwt', { session: false }), async (req
         console.log(err);
         return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     })
-    console.log(user)
     if (!user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     res.status(200).json({ success: true, user: user });
 });
 
-router.get('/feed', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-    console.log(req.user)
+router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })], async (req, res, next) => {
     if (!req.user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     let user = await prisma.user.findUnique({
         where: {
@@ -42,7 +42,6 @@ router.get('/feed', passport.authenticate('jwt', { session: false }), async (req
         console.log(err);
         return res.status(404).json({ success: false, msg: "Utilisateur introuvable." });
     })
-    console.log(user.combo.map(c => { return c.name }).join(', '))
     let comboList = user.combo.map(c => { return c.name }).join(', ')
     let response = await fetch(process.env.VINTED_API_URL + '/filters/combo?comboList='+comboList, {
         headers: {
@@ -53,10 +52,11 @@ router.get('/feed', passport.authenticate('jwt', { session: false }), async (req
         console.log(err);
         return false
     })
-    if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." })
-    response = await response.json()
-
+    response = await response?.json()
     if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
+    response = response.filter((item) => {
+        return item.price >= user.combo.find(c => { return c.name == item.comboId }).priceDown && item.price <= user.combo.find(c => { return c.name == item.comboId }).priceUp
+    })
     res.status(200).json({ success: true, feed: response });
 })
 
