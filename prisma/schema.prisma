@@ -16,7 +16,7 @@ model User {
   username  String?
   issuer    String?
   plan      Int     @default(0)
-  comboId   String[]   @default([])
+  combo     Combo[]
   admin     Boolean @default(false)
 }
 
@@ -25,4 +25,11 @@ model Session {
   sid       String   @unique
   data      String
   expiresAt   DateTime
+}
+
+model Combo {
+    id     Int @id @default(autoincrement())
+    name   String
+    user   User @relation(fields: [userId], references: [id])
+    userId Int
 }

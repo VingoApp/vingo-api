@@ -11,8 +11,8 @@ const fetch = require('node-fetch')
 require('dotenv').config()
 
 router.post('/add', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-    let { comboId } = req.query
-    if (!comboId) return res.status(400).json({ success: false, msg: "Informations manquantes." });
+    let { comboName } = req.query
+    if (!comboName) return res.status(400).json({ success: false, msg: "Informations manquantes." });
     let user = await prisma.user.findUnique({
         where: {
             id: req.user.id
@@ -22,49 +22,65 @@ router.post('/add', passport.authenticate('jwt', { session: false }), async (req
         return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     })
     if (!user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
-    console.log(user.comboId)
-    if (!user.comboId[comboId])
-        user.comboId.push(comboId)
-    let newCombo = await prisma.user.update({
+    console.log(user.combo)
+    combo = await prisma.combo.findFirst({
         where: {
-            id: req.user.id
-        },
-        data: {
-            comboId: user.comboId
+            name: comboName,
+            userId: user.id
         }
     }).catch((err) => {
         console.log(err);
         return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     })
-    if (!newCombo) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    if (!combo) {
+        combo = await prisma.combo.create({
+            data: {
+                name: comboName,
+                userId: user.id
+            }
+        }).catch((err) => {
+            console.log(err);
+            return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+        })
+        if (!combo) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    }
     res.status(200).json({ success: true, msg: "Combo ajouté avec succès." });
 })
 
 router.post('/remove', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-    let { comboId } = req.body
-    if (!comboId) return res.status(400).json({ success: false, msg: "Informations manquantes." });
+    let { comboName } = req.query
+    if (!comboName) return res.status(400).json({ success: false, msg: "Informations manquantes." });
     let user = await prisma.user.findUnique({
         where: {
             id: req.user.id
+        },
+        include: {
+            combo: true
         }
     }).catch((err) => {
         console.log(err);
         return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     })
     if (!user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
-    comboId = user.comboId.filter((id) => id != comboId)
-    let newCombo = await prisma.user.update({
+    combo = await prisma.combo.findFirst({
         where: {
-            id: req.user.id
-        },
-        data: {
-            comboId: comboId
+            name: comboName,
+            userId: user.id
         }
     }).catch((err) => {
         console.log(err);
         return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     })
-    if (!newCombo) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    if (!combo) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    combo = await prisma.combo.deleteMany({
+        where: {
+            name: comboName,
+            userId: user.id
+        }
+    }).catch((err) => {
+        console.log(err);
+        return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    })
     res.status(200).json({ success: true, msg: "Combo supprimé avec succès." });
 })
 
