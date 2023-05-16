@@ -106,12 +106,17 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
         let notifUser = await prisma.user.findUnique({
             where: {
                 id: notifications[i].userId
+            },
+            include: {
+                combo: true
             }
         }).catch(e => {
             console.log(e)
             return { error: 'Impossible de trouver l\'utilisateur' }
         })
         if (!notifUser) return
+        if (comboList.length == 0) return
+        if (!notifUser.combo.find(c=> c.name == comboList[0].comboId)) return
 
         let subscription = {
             endpoint: notifications[i].endpoint,
@@ -122,18 +127,42 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
         }
 
         try {
-            webpush.sendNotification(subscription, JSON.stringify(
-                {
-                    title: 'Nouvel article',
-                    body: `test`,
+            let content;
+            if (comboList.length == 1) {
+                content = {
+                    title: comboList[0].title,
+                    body: comboList[0].brand + ' (' + comboList[0].size + ') - ' + comboList[0].price + '€',
+                    icon: comboList[0].thumbnail,
                     vibrate: [100, 50, 100],
+                    data: {
+                        url: comboList[0].url
+                    },
                     actions: [
                         {
-                            action: 'explore', title: 'Voir',
+                            action: comboList[0].url, title: 'Voir',
                         },
                     ]
 
                 }
+            } else {
+                content = {
+                    title: comboList.length + ' nouveaux articles',
+                    body: comboList[0].brand + ' (' + comboList[0].size + ')',
+                    icon: comboList[0].thumbnail,
+                    vibrate: [100, 50, 100],
+                    data: {
+                        url: comboList[0].url
+                    },
+                    actions: [
+                        {
+                            action: comboList[0].url, title: 'Voir',
+                        },
+                    ]
+
+                }
+            }
+            webpush.sendNotification(subscription, JSON.stringify(
+                content
             ))
         }
         catch (e) {

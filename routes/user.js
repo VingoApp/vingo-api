@@ -54,7 +54,7 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
     })
     response = await response?.json()
     if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
-    response = response.filter((item) => {
+    response = response?.filter((item) => {
         return item.price >= user.combo.find(c => { return c.name == item.comboId }).priceDown && item.price <= user.combo.find(c => { return c.name == item.comboId }).priceUp
     })
     res.status(200).json({ success: true, feed: response });
