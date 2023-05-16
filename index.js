@@ -55,10 +55,13 @@ app.use(cors());
 const auth = require('./routes/auth');
 const user = require('./routes/user');
 const filters = require('./routes/filters');
+const notifications = require('./routes/notifications');
 
 app.use(auth);
 app.use(user);
 app.use('/filters', filters);
+app.use('/push', notifications);
+
 /**
  * -------------- SERVER ----------------
  */

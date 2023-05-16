@@ -8,6 +8,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken")
 const fetch = require('node-fetch')
+const webpush = require('web-push');
 require('dotenv').config()
 
 const rateLimit = require('../middleware/rateLimit')
@@ -87,4 +88,66 @@ router.post('/remove', [rateLimit, passport.authenticate('jwt', { session: false
     res.status(200).json({ success: true, msg: "Combo supprimé avec succès." });
 })
 
+router.post('/notify', [rateLimit], async (req, res, next) => {
+    let authorization = req.body?.headers['Authorization']?.split(' ')[1]
+    if (!authorization) return res.status(400).json({ success: false, msg: "Informations manquantes." });
+    let token = jwt.verify(authorization, process.env.SECRET)
+    if (token != process.env.SECRET) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+
+    let comboList = req.body?.body?.comboList
+    if (!comboList) return res.status(400).json({ success: false, msg: "Informations manquantes." });
+
+    let notifications = await prisma.notification.findMany().catch(e => {
+        console.log(e)
+        return { error: 'Impossible de trouver les notifications' }
+    })
+
+    for (let i = 0; i < notifications.length; i++) {
+        let notifUser = await prisma.user.findUnique({
+            where: {
+                id: notifications[i].userId
+            }
+        }).catch(e => {
+            console.log(e)
+            return { error: 'Impossible de trouver l\'utilisateur' }
+        })
+        if (!notifUser) return
+
+        let subscription = {
+            endpoint: notifications[i].endpoint,
+            keys: {
+                auth: notifications[i].auth_token,
+                p256dh: notifications[i].public_key
+            }
+        }
+
+        try {
+            webpush.sendNotification(subscription, JSON.stringify(
+                {
+                    title: 'Nouvel article',
+                    body: `test`,
+                    vibrate: [100, 50, 100],
+                    actions: [
+                        {
+                            action: 'explore', title: 'Voir',
+                        },
+                    ]
+
+                }
+            ))
+        }
+        catch (e) {
+            console.log(e)
+            await prisma.notification.delete({
+                where: {
+                    id: notifications[i].id
+                }
+            }).catch(e => {
+                console.log(e)
+                return { error: 'Impossible de supprimer la notification' }
+            })
+        }
+    }
+
+})
 module.exports = router;
