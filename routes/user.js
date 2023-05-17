@@ -30,7 +30,7 @@ router.get('/user', [rateLimit, passport.authenticate('jwt', { session: false })
 });
 
 router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })], async (req, res, next) => {
-    if (!req.user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
+    if (!req.user) return res.status(401).json({ success: false, msg: "User incorrect." });
     let user = await prisma.user.findUnique({
         where: {
             id: req.user.id
@@ -42,7 +42,9 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
         console.log(err);
         return res.status(404).json({ success: false, msg: "Utilisateur introuvable." });
     })
+    console.log(user.combo)
     let comboList = user.combo.map(c => { return c.name }).join(', ')
+    console.log(comboList)
     let response = await fetch(process.env.VINTED_API_URL + '/filters/combo?comboList='+comboList, {
         headers: {
             "Content-Type": "application/json",
