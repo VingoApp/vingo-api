@@ -56,7 +56,7 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
     if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
     response = await response.json()
     if (!response?.length) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
-    response = filterCombo(user, response)
+    response = await filterCombo(user, response)
     res.status(200).json({ success: true, feed: response });
 })
 
