@@ -40,7 +40,7 @@ router.post('/add', [rateLimit, passport.authenticate('jwt', { session: false })
             data: {
                 name: combo.name,
                 priceUp: parseInt(combo.priceUp) || 0,
-                priceDown: parseInt(combo.priceUp) || 10000000,
+                priceDown: parseInt(combo.priceDown) || 10000000,
                 userId: user.id
             }
         }).catch((err) => {
