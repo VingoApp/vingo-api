@@ -42,9 +42,7 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
         console.log(err);
         return res.status(404).json({ success: false, msg: "Utilisateur introuvable." });
     })
-    console.log(user.combo)
     let comboList = user.combo.map(c => { return c.name }).join(', ')
-    console.log(comboList)
     let response = await fetch(process.env.VINTED_API_URL + '/filters/combo?comboList='+comboList, {
         headers: {
             "Content-Type": "application/json",
@@ -54,9 +52,10 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
         console.log(err);
         return false
     })
-    if (!response.ok) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
-    response = await response?.json()
     console.log(response)
+    if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
+    response = await response?.json()
+    
     if (response.status != 200) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
     response = response?.filter((item) => {
         return item.price >= user.combo.find(c => { return c.name == item.comboId }).priceDown && item.price <= user.combo.find(c => { return c.name == item.comboId }).priceUp
