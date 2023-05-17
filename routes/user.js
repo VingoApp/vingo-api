@@ -10,7 +10,8 @@ const jwt = require("jsonwebtoken")
 const fetch = require('node-fetch')
 require('dotenv').config()
 
-const rateLimit = require('../middleware/rateLimit')
+const rateLimit = require('../middleware/rateLimit');
+const filterCombo = require('../lib/filterCombo');
 
 router.get('/user', [rateLimit, passport.authenticate('jwt', { session: false })], async (req, res, next) => {
     if (!req.user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
@@ -52,13 +53,10 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
         console.log(err);
         return false
     })
-    
     if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
     response = await response.json()
     if (!response?.length) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
-    response = response.filter((item) => {
-        return item.price >= user.combo.find(c => { return c.name == item.comboId }).priceDown && item.price <= user.combo.find(c => { return c.name == item.comboId }).priceUp
-    })
+    response = filterCombo(user, response)
     res.status(200).json({ success: true, feed: response });
 })
 
