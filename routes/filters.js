@@ -90,7 +90,6 @@ router.post('/remove', [rateLimit, passport.authenticate('jwt', { session: false
 })
 
 router.post('/notify', [rateLimit], async (req, res, next) => {
-    console.log(req.body)
     if (!req.body?.headers) return res.status(400).json({ success: false, msg: "Informations manquantes." });
     let authorization = req.body?.headers['Authorization']?.split(' ')[1]
     if (!authorization) return res.status(400).json({ success: false, msg: "Informations manquantes." });
