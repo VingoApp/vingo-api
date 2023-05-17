@@ -52,6 +52,7 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
         console.log(err);
         return false
     })
+    console.log(response)
     if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
     response = await response?.json()
     if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
