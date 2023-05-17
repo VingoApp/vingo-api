@@ -1,0 +1,47 @@
+[
+    {
+        "id": "ralph_lauren_vetement",
+        "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&brand_id[]=88&order=newest_first",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "nike_vetement",
+        "url": "https://www.vinted.fr/catalog?catalog[]=2050&brand_id[]=53&size_id[]=208&size_id[]=209&order=newest_first",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "tommy_hilfiger_vetement",
+        "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&brand_id[]=94&order=newest_first",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "lacoste_vetement",
+        "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=304",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "the_north_face_vetement",
+        "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=2319",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "jordan_vetement",
+        "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=2703",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "stussy_vetement",
+        "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=441",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "corteiz_vetement",
+        "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=3036449",
+        "size": ["M", "L"]
+    },
+    {
+        "id": "sneakers",
+        "url": "https://www.vinted.fr/catalog?catalog[]=1231&order=newest_first&brand_id[]=53&brand_id[]=2703&brand_id[]=5977&brand_id[]=283953&brand_id[]=370427&brand_id[]=5750136&brand_id[]=5761505&brand_id[]=11445&brand_id[]=2570378&brand_id[]=6005897&brand_id[]=5038623&brand_id[]=5983778&brand_id[]=6021656&brand_id[]=6140115&brand_id[]=3138684&brand_id[]=2131149&brand_id[]=5204340&brand_id[]=6596333&brand_id[]=7336273&brand_id[]=6689877&brand_id[]=304&brand_id[]=677891&brand_id[]=268734&brand_id[]=5988006&brand_id[]=7108764&brand_id[]=7278799&brand_id[]=7133888&brand_id[]=115490&brand_id[]=6582025",
+        "size": ["38", "39", "40", "41", "42", "43", "44"]
+    }
+]

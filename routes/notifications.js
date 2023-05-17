@@ -23,7 +23,6 @@ const rateLimit = require('../middleware/rateLimit')
 router.get('/key', [rateLimit, passport.authenticate('jwt', { session: false })], async (req, res, next) => {
     if (!req.user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     let vapidPublicKey = process.env.VAPID_PUBLIC_KEY
-    console.log(vapidPublicKey)
     if (!vapidPublicKey) return res.json({ error: 'Impossible de récupérer la clé' })
     res.status(200).json(vapidPublicKey);
 });
@@ -31,7 +30,6 @@ router.get('/key', [rateLimit, passport.authenticate('jwt', { session: false })]
 router.post('/register', [rateLimit, passport.authenticate('jwt', { session: false })], async (req, res, next) => {
     if (!req.user) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
     const subscription = req.body
-    console.log(subscription)
     const user = await prisma.user.findUnique({
         where: {
             id: req.user.id

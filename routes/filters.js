@@ -11,7 +11,8 @@ const fetch = require('node-fetch')
 const webpush = require('web-push');
 require('dotenv').config()
 
-const rateLimit = require('../middleware/rateLimit')
+const rateLimit = require('../middleware/rateLimit');
+const filterCombo = require('../lib/filterCombo');
 
 router.post('/add', [rateLimit, passport.authenticate('jwt', { session: false })], async (req, res, next) => {
     let combo = JSON.parse(req.query.combo)
@@ -116,8 +117,9 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
         })
         if (!notifUser) return
         if (comboList.length == 0) return
-        if (!notifUser.combo.find(c=> c.name == comboList[0].comboId)) return
-
+        if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return
+        comboList = await filterCombo(notifUser, comboList)
+        if (comboList.length == 0) return
         let subscription = {
             endpoint: notifications[i].endpoint,
             keys: {
