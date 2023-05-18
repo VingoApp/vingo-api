@@ -164,7 +164,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
 
                 }
             }
-            console.log(content.title)
+            console.log(notifUser.id, content.title)
             webpush.sendNotification(subscription, JSON.stringify(
                 content
             )).catch(e => {
