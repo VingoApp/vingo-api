@@ -105,7 +105,6 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
     })
 
     for (let i = 0; i < notifications.length; i++) {
-        console.log('notifUser')
         let notifUser = await prisma.user.findUnique({
             where: {
                 id: notifications[i].userId
@@ -117,8 +116,10 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
             console.log(e)
             return e
         })
+        console.log('notifUser ', notifUser.id)
         if (!notifUser) return
         if (comboList.length == 0) return
+        console.log(comboList[0].comboId)
         if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return
         comboList = await filterCombo(notifUser, comboList)
         if (comboList.length == 0) return
