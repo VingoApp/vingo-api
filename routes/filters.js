@@ -103,6 +103,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
         console.log(e)
         return { error: 'Impossible de trouver les notifications' }
     })
+    console.log(notifications)
 
     for (let i = 0; i < notifications.length; i++) {
         let notifUser = await prisma.user.findUnique({
