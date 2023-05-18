@@ -166,7 +166,10 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
             }
             webpush.sendNotification(subscription, JSON.stringify(
                 content
-            ))
+            )).catch(e => {
+                console.log(e)
+                return { error: 'Impossible d\'envoyer la notification' }
+            })
         }
         catch (e) {
             console.log(e)
