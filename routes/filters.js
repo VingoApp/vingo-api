@@ -114,13 +114,13 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
             }
         }).catch(e => {
             console.log(e)
-            return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
+            return res.status(401).json({ success: false, msg: "Impossible de trouver l'utilisateur" });
         })
-        if (!notifUser) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
-        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
-        if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
+        if (!notifUser) return res.status(401).json({ success: false, msg: "Impossible de trouver l'utilisateur" });
+        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "La combolist est vide" });
+        if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return res.status(401).json({ success: false, msg: "L'utilisateur n'est pas abonné à cette comboList" });
         comboList = await filterCombo(notifUser, comboList)
-        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
+        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "La combolist est vide après filtre" });
         let subscription = {
             endpoint: notifications[i].endpoint,
             keys: {
@@ -164,12 +164,12 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
 
                 }
             }
-            console.log(content)
+            console.log(content.title)
             webpush.sendNotification(subscription, JSON.stringify(
                 content
             )).catch(e => {
                 console.log(e)
-                return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
+                return res.status(401).json({ success: false, msg: "Impossible d'envoyer la notification" });
             })
         }
         catch (e) {
