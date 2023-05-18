@@ -114,13 +114,13 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
             }
         }).catch(e => {
             console.log(e)
-            return res.status(401).json({ success: false, msg: "Impossible de trouver l'utilisateur" });
+            return e
         })
-        if (!notifUser) return res.status(401).json({ success: false, msg: "Impossible de trouver l'utilisateur" });
-        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "La combolist est vide" });
-        if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return res.status(401).json({ success: false, msg: "L'utilisateur n'est pas abonné à cette comboList" });
+        if (!notifUser) return
+        if (comboList.length == 0) return
+        if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return
         comboList = await filterCombo(notifUser, comboList)
-        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "La combolist est vide après filtre" });
+        if (comboList.length == 0) return
         let subscription = {
             endpoint: notifications[i].endpoint,
             keys: {
@@ -180,7 +180,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
                 }
             }).catch(e => {
                 console.log(e)
-                return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
+                return e
             })
         }
     }
