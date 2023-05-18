@@ -169,7 +169,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
                 content
             )).catch(e => {
                 console.log(e)
-                return res.status(401).json({ success: false, msg: "Impossible d'envoyer la notification" });
+                return e
             })
         }
         catch (e) {
