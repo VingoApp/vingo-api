@@ -104,10 +104,10 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
         return { error: 'Impossible de trouver les notifications' }
     })
 
-    for (let i = 0; i < notifications.length; i++) {
+    notifications.forEach(async (notif) => {
         let notifUser = await prisma.user.findUnique({
             where: {
-                id: notifications[i].userId
+                id: notif.userId
             },
             include: {
                 combo: true
@@ -124,10 +124,10 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
         comboList = await filterCombo(notifUser, comboList)
         if (comboList.length == 0) return
         let subscription = {
-            endpoint: notifications[i].endpoint,
+            endpoint: notif.endpoint,
             keys: {
-                auth: notifications[i].auth_token,
-                p256dh: notifications[i].public_key
+                auth: notif.auth_token,
+                p256dh: notif.public_key
             }
         }
 
@@ -178,14 +178,14 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
             console.log(e)
             await prisma.notification.delete({
                 where: {
-                    id: notifications[i].id
+                    id: notif.id
                 }
             }).catch(e => {
                 console.log(e)
                 return e
             })
         }
-    }
+    })
     res.status(200).json({ success: true, msg: "Notifications envoyées avec succès." });
 
 })
