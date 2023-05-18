@@ -97,7 +97,6 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
     if (token != process.env.SECRET) return res.status(401).json({ success: false, msg: "Informations incorrectes." });
 
     let comboList = req.body?.body?.comboList
-    console.log(comboList.length)
     if (!comboList) return res.status(400).json({ success: false, msg: "Informations manquantes." });
 
     let notifications = await prisma.notification.findMany().catch(e => {
