@@ -105,6 +105,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
     })
 
     for (let i = 0; i < notifications.length; i++) {
+        console.log('notifUser')
         let notifUser = await prisma.user.findUnique({
             where: {
                 id: notifications[i].userId
