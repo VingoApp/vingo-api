@@ -155,7 +155,6 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
                     body: comboList[0].brand + ' (' + comboList[0].size + ')',
                     icon: comboList[0].thumbnail,
                     image: comboList[0].thumbnail,
-                    picture: comboList[0].thumbnail,
                     topic: 'new-article',
                     vibrate: [100, 50, 100],
                     data: {
