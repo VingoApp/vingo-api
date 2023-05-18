@@ -114,13 +114,13 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
             }
         }).catch(e => {
             console.log(e)
-            return { error: 'Impossible de trouver l\'utilisateur' }
+            return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
         })
-        if (!notifUser) return
-        if (comboList.length == 0) return
-        if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return
+        if (!notifUser) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
+        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
+        if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
         comboList = await filterCombo(notifUser, comboList)
-        if (comboList.length == 0) return
+        if (comboList.length == 0) return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
         let subscription = {
             endpoint: notifications[i].endpoint,
             keys: {
@@ -169,7 +169,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
                 content
             )).catch(e => {
                 console.log(e)
-                return { error: 'Impossible d\'envoyer la notification' }
+                return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
             })
         }
         catch (e) {
@@ -180,7 +180,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
                 }
             }).catch(e => {
                 console.log(e)
-                return { error: 'Impossible de supprimer la notification' }
+                return res.status(401).json({ success: false, msg: "Une erreur s'est produite." });
             })
         }
     }
