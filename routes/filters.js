@@ -39,8 +39,8 @@ router.post('/add', [rateLimit, passport.authenticate('jwt', { session: false })
         newCombo = await prisma.combo.create({
             data: {
                 name: combo.name,
-                priceUp: parseInt(combo.priceUp) || 0,
-                priceDown: parseInt(combo.priceDown) || 10000000,
+                priceUp: parseInt(combo.priceUp) || 10000000,
+                priceDown: parseInt(combo.priceDown) || 0,
                 userId: user.id
             }
         }).catch((err) => {
