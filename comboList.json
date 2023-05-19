@@ -2,42 +2,42 @@
     {
         "id": "ralph_lauren_vetement",
         "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&brand_id[]=88&order=newest_first",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "nike_vetement",
         "url": "https://www.vinted.fr/catalog?catalog[]=2050&brand_id[]=53&size_id[]=208&size_id[]=209&order=newest_first",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "tommy_hilfiger_vetement",
         "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&brand_id[]=94&order=newest_first",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "lacoste_vetement",
         "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=304",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "the_north_face_vetement",
         "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=2319",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "jordan_vetement",
         "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=2703",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "stussy_vetement",
         "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=441",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "corteiz_vetement",
         "url": "https://www.vinted.fr/catalog?size_id[]=208&size_id[]=209&catalog[]=5&order=newest_first&brand_id[]=3036449",
-        "size": ["M", "L"]
+        "size": ["S", "M", "L"]
     },
     {
         "id": "sneakers",
