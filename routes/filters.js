@@ -139,11 +139,11 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
                     image: comboList[0].thumbnail,
                     vibrate: [100, 50, 100],
                     data: {
-                        url: `https://www.vinted.fr/items/${comboList[0].id}`
+                        url: `https://www.vinted.fr/items/${comboList[0].itemId}`
                     },
                     actions: [
                         {
-                            action: `https://www.vinted.fr/items/${comboList[0].id}`, title: 'Voir',
+                            action: `https://www.vinted.fr/items/${comboList[0].itemId}`, title: 'Voir',
                         },
                     ]
 
@@ -157,11 +157,11 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
                     topic: 'new-article',
                     vibrate: [100, 50, 100],
                     data: {
-                        url: `https://www.vinted.fr/items/${comboList[0].id}`
+                        url: `https://www.vinted.fr/items/${comboList[0].itemId}`
                     },
                     actions: [
                         {
-                            action: `https://www.vinted.fr/items/${comboList[0].id}`, title: 'Voir',
+                            action: `https://www.vinted.fr/items/${comboList[0].itemId}`, title: 'Voir',
                         },
                     ]
 
