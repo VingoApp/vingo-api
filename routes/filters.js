@@ -119,7 +119,7 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
         if (!notifUser) return
         if (comboList.length == 0) return
         if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return
-        comboList = await filterCombo(notifUser, comboList)
+        comboList = filterCombo(notifUser, comboList)
         if (comboList.length == 0) return
         let subscription = {
             endpoint: notif.endpoint,
