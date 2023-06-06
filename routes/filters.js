@@ -116,10 +116,8 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
             console.log(e)
             return e
         })
-        console.log('notifUser ', notifUser.id)
         if (!notifUser) return
         if (comboList.length == 0) return
-        console.log(comboList[0].comboId)
         if (!notifUser.combo.find(c => c.name == comboList[0].comboId)) return
         comboList = await filterCombo(notifUser, comboList)
         if (comboList.length == 0) return
@@ -168,7 +166,6 @@ router.post('/notify', [rateLimit], async (req, res, next) => {
 
                 }
             }
-            console.log(notifUser.id, content.title)
             webpush.sendNotification(subscription, JSON.stringify(
                 content
             )).catch(e => {

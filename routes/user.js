@@ -45,7 +45,7 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
         return res.status(404).json({ success: false, msg: "Utilisateur introuvable." });
     })
     let comboList = user.combo.map(c => { return c.name }).join(', ')
-    let response = await fetch(process.env.VINTED_API_URL + `/filters/combo?comboList=${comboList}&from=${req?.query?.from || 0 }&to=${ req?.query?.to || 20 }`, {
+    let response = await fetch(process.env.VINTED_API_URL + `/filters/combo?comboList=${comboList}`, {
         headers: {
             /* "Content-Type": "application/json", */
             "Authorization": "Bearer " + req.headers.authorization.split(" ")[1]
@@ -57,7 +57,7 @@ router.get('/feed', [rateLimit, passport.authenticate('jwt', { session: false })
     if (!response) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
     response = await response.json()
     if (!response?.length) return res.status(404).json({ success: false, msg: "Informations incorrectes." });
-    response = await filterCombo(user, response)
+    response = await filterCombo(user, response, req.query?.from || 0, req.query?.to || 20, req.query?.search || '')
     res.status(200).json({ success: true, feed: response });
 })
 
